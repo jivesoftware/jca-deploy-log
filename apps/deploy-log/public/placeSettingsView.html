@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="wrapper" class="container-fluid">
+
+            <form role="form">
+                <div class="form-group">
+                    <label for="prodUrl">Production JCA URL</label>
+                    <input type="text" class="form-control" id="prodUrl" placeholder="Enter Production JCA instance URL">
+                </div>
+                <div class="form-group">
+                    <label for="uatUrl">UAT JCA URL</label>
+                    <input type="text" class="form-control" id="uatUrl" placeholder="Enter UAT JCA instance URL">
+                </div>
+            </form>
+
+            <button id="submit" class="btn btn-primary">Save</button>
+        </div>
+
+        <script type="text/javascript" src="javascripts/shared.js"></script>
+        <script type="text/javascript">
+
+
+            gadgets.actions.updateAction({
+                id: "com.jivesoftware.deployLog.placeSettings",
+                callback: function(context) {
+                    gadgets.window.adjustHeight();
+
+                    osapi.jive.corev3.resolveContext(context, function(result) {
+                        var placeURI = result.content.toURI();
+
+                        osapi.http.get({
+                            'href': getServiceHost() + '/deploy-log/configure?'+$.param({placeURI: placeURI}),
+                            'authz': 'signed',
+                            'format': 'json',
+                            'noCache': true
+                        }).execute(function (response) {
+                            if (response.error) {
+                                console.log('Error', response);
+                            } else {
+                                if (response.content) {
+                                    $("#prodUrl").val(response.content.prodUrl);
+                                    $("#uatUrl").val(response.content.uatUrl);
+                                }
+                            }
+                        });
+
+                    });
+
+                    $("#submit").click(function() {
+                        osapi.jive.corev3.resolveContext(context, function(result) {
+                            var prodUrl = $("#prodUrl").val();
+                            var uatUrl = $("#uatUrl").val();
+                            var placeURI = result.content.toURI();
+
+                            osapi.http.post({
+                                'href': getServiceHost() + '/deploy-log/configure',
+                                'authz': 'signed',
+                                'noCache': true,
+                                'headers': {'content-type': ['application/json']},
+                                'body': {
+                                    'placeURI': placeURI,
+                                    'prodUrl': prodUrl,
+                                    'uatUrl': uatUrl
+                                }
+                            }).execute(function (response) {
+                                if (response.error) {
+                                    console.log('Error', response);
+                                } else {
+                                    console.log('response from save', response);
+                                    osapi.jive.core.container.closeApp();
+                                }
+                            });
+
+                        });
+                    });
+
+                }
+            });
+        </script>
+    </body>
+</html>
+

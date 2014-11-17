@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="stylesheets/main.css">
+    </head>
+    <body>
+
+        <div id="wrapper" class="container-fluid">
+
+            <ul class="nav nav-pills" role="tablist">
+                <li role="presentation" class="active"><a data-type="prod" href="#">Production</a></li>
+                <li role="presentation"><a data-type="uat" href="#">UAT</a></li>
+            </ul>
+
+            <div id="log">
+
+            </div>
+
+        </div>
+
+        <script type="text/x-handlebars-template" id="t-log">
+            <table class="table table-hover">
+                <tbody>
+
+                {{#each entries}}
+                    <tr>
+                        <td><a href="https://cloud.jivesoftware.com/admin/manage-deployrequestlog.jspa?deployRequestId={{id}}">{{formattedTimestamp}}</a></td>
+                        <td>
+                            {{#if user}}
+                                <a href="{{user.link}}">{{user.displayName}}</a>
+                            {{else}}
+                                {{username}}
+                            {{/if}}
+                        </td>
+                        <td>
+                            <ul>
+                                {{#each files}}
+                                    <li>{{this}}</li>
+                                {{/each}}
+                            </ul>
+                        </td>
+                        <td>{{{message}}}</td>
+                    </tr>
+                {{/each}}
+
+                </tbody>
+            </table>
+        </script>
+
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.js"></script>
+        <script type="text/javascript" src="/javascripts/underscore-min.js"></script>
+        <script type="text/javascript" src="/javascripts/backbone-min.js"></script>
+        <script type="text/javascript" src="/javascripts/handlebars-v2.0.0.js"></script>
+        <script type="text/javascript" src="/javascripts/Autolinker.min.js"></script>
+        <script type="text/javascript" src="javascripts/shared.js"></script>
+        <script type="text/javascript" src="javascripts/model.js"></script>
+        <script type="text/javascript" src="javascripts/view.js"></script>
+        <script>
+            gadgets.util.registerOnLoadHandler(function() {
+
+                osapi.jive.core.container.getLaunchContext(function(ctx) {
+                    osapi.jive.corev3.resolveContext(ctx, function(place) {
+
+                        var model = new Updates({
+                            place: place,
+                            baseUrl: getServiceHost()
+                        });
+
+                        var view = new UpdatesView({
+                            model: model,
+                            place: place
+                        });
+
+                        view.on('viewLoaded', function() {
+                            gadgets.window.adjustHeight();
+                        });
+
+                    });
+                });
+
+            });
+        </script>
+    </body>
+
+</html>

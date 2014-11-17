@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module specificationVersion="1">
+    <ModulePrefs title="JCA Deployment Log"
+                 description="JCA Deployment Log"
+                 author="Jive Software Professional Services"
+                 author_affiliation="Jive">
+
+        <Require feature="dynamic-height"/>
+        <Require feature="jive-core-v3"/>
+        <Require feature="jive-core-v3-resolver"/>
+        <Require feature="jquery-1.6"/>
+        <Require feature="osapi"/>
+        <Require feature="opensocial-data"/>
+        <Require feature="views"/>
+        <Require feature="actions">
+            <Param name="action-contributions">
+                <![CDATA[
+
+                    <action
+                        id="com.jivesoftware.deployLog.placeTab"
+                        path="jive/tabs/places/project"
+                        label="JCA Deployment Log"
+                        view="placeTabView"/>
+
+                    <action
+                        id="com.jivesoftware.deployLog.placeSettings"
+                        path="jive/settings/places/project"
+                        label="JCA Deployment Log Settings"
+                        view="placeSettingsView"/>
+
+                ]]>
+            </Param>
+        </Require>
+
+        <Link rel="Icon" href="images/16x16.png"/>
+        <Link rel="MediumIcon" href="images/48x48.png"/>
+        <Link rel="LargeIcon" href="images/128x128.png"/>
+
+    </ModulePrefs>
+
+    <Content type="html" view="placeTabView" href="placeTabView.html" />
+    <Content type="html" view="placeSettingsView" href="placeSettingsView.html" />
+
+</Module>

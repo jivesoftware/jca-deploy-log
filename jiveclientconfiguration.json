@@ -1,0 +1,15 @@
+{
+    "clientUrl": "http://localhost",
+    "port": "8090",
+    "persistence": "jive-persistence-mongo",
+    "extensionInfo": {
+        "uuid": "407337473-d226-4dec-aa34-f74e5758b373",
+        "name": "Deployment Log",
+        "description": "JCA Deployment Log"
+    },
+    "jcaCredentials": [{
+        "baseUrl": "https://cloud.jivesoftware.com/admin",
+        "username": "{{JCA_PROD_USERNAME}}",
+        "password": "{{JCA_PROD_PASSWORD}}"
+    }]
+}
